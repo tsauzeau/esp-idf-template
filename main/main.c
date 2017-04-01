@@ -5,6 +5,9 @@
 #include "esp_event_loop.h"
 #include "nvs_flash.h"
 #include "driver/gpio.h"
+#include "sdkconfig.h"
+
+#define BLINK_GPIO CONFIG_BLINK_GPIO
 
 esp_err_t event_handler(void *ctx, system_event_t *event)
 {
@@ -31,10 +34,10 @@ void app_main(void)
     ESP_ERROR_CHECK( esp_wifi_start() );
     ESP_ERROR_CHECK( esp_wifi_connect() );
 
-    gpio_set_direction(GPIO_NUM_4, GPIO_MODE_OUTPUT);
+    gpio_set_direction(BLINK_GPIO, GPIO_MODE_OUTPUT);
     int level = 0;
     while (true) {
-        gpio_set_level(GPIO_NUM_4, level);
+        gpio_set_level(BLINK_GPIO, level);
         level = !level;
         vTaskDelay(300 / portTICK_PERIOD_MS);
     }
